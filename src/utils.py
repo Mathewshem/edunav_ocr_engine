@@ -14,12 +14,24 @@ def set_seed(seed: int = 42):
     torch.cuda.manual_seed_all(seed)
 
 def save_labels(labels, path):
+    # `labels` should be a list in class-index order
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(labels, f)
+        json.dump(list(labels), f, ensure_ascii=False, indent=2)
+
 
 def load_labels(path):
     with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+        obj = json.load(f)
+
+    if isinstance(obj, list):
+        return obj
+
+    if isinstance(obj, dict):
+        items = sorted(obj.items(), key=lambda kv: kv[1])  # sort by id
+        return [name for name, _ in items]
+
+    raise ValueError("labels.json must be a list or a dict {name: id}.")
+
 
 def project_root():
     return os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))

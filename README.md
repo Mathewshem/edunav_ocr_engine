@@ -13,23 +13,15 @@ python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 
-markdown
-Copy
-Edit
+
 
 ### 2) Raspberry Pi (inference)
 - Install OpenCV:
 sudo apt-get update && sudo apt-get install -y python3-opencv
 
-diff
-Copy
-Edit
 - Use ONNX Runtime for inference:
 pip3 install onnxruntime --break-system-packages
 
-markdown
-Copy
-Edit
 - If Torch is heavy on Pi 2GB, skip it.
 
 ## Folders
@@ -41,23 +33,16 @@ Edit
 ## Train (Windows)
 python -m src.train
 
-graphql
-Copy
-Edit
+
 
 ## Export to ONNX (for Pi)
 python -m src.export_onnx
 
-shell
-Copy
-Edit
 
 ## Run API (Windows or Pi)
 python -m uvicorn api.main:app --host 0.0.0.0 --port 8000
 
-bash
-Copy
-Edit
+
 Open Swagger: `http://<host>:8000/docs` → `POST /ocr-classify`
 
 ## Output JSON
@@ -91,9 +76,7 @@ Robust OCR routing with fallbacks & error handling
 Works on Windows (dev) and Raspberry Pi 4 (2GB)
 
 Project Structure (simplified)
-pgsql
-Copy
-Edit
+
 models/ocr_engine/
 ├─ api/
 │  └─ main.py                # FastAPI app (/ocr-classify, /ocr-auto)
@@ -116,24 +99,18 @@ models/ocr_engine/
 Quick Start (Windows dev)
 Create & activate venv, install deps
 
-bash
-Copy
-Edit
+
 pip install -r requirements.txt
 # TrOCR (handwritten) extras:
 pip install transformers sentencepiece timm accelerate protobuf
 (Windows only) Point pytesseract to Tesseract.exe
 Edit scripts/ocr_engines.py if Tesseract isn’t on PATH:
 
-python
-Copy
-Edit
+
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 Run API
 
-bash
-Copy
-Edit
+
 cd models/ocr_engine
 uvicorn api.main:app --host 0.0.0.0 --port 8000
 Open docs:
@@ -142,24 +119,18 @@ http://127.0.0.1:8000/docs
 Quick Start (Raspberry Pi 4B, 2GB)
 System packages (OCR, audio, OpenCV runtime)
 
-bash
-Copy
-Edit
+
 sudo apt update
 sudo apt install -y tesseract-ocr espeak-ng python3-opencv
 Python deps
 
-bash
-Copy
-Edit
+
 pip3 install fastapi uvicorn[standard] pillow pytesseract onnxruntime --break-system-packages
 # Optional for handwritten TrOCR (heavier on Pi):
 pip3 install transformers sentencepiece timm accelerate protobuf --break-system-packages
 Run API
 
-bash
-Copy
-Edit
+
 cd ~/models/ocr_engine
 python3 -m uvicorn api.main:app --host 0.0.0.0 --port 8000
 Open from your laptop on same Wi-Fi:
@@ -171,9 +142,7 @@ Endpoints
 GET /
 Health & info.
 
-json
-Copy
-Edit
+
 { "message": "EduNav+ OCR Classifier is running.", "endpoint": "/ocr-classify" }
 POST /ocr-classify
 Classify image only.
@@ -182,9 +151,7 @@ form-data: file (image)
 
 200 response:
 
-json
-Copy
-Edit
+
 {
   "label": "printed|handwritten|diagram",
   "confidence": 0.91,
@@ -198,9 +165,7 @@ form-data: file (image)
 
 200 response:
 
-json
-Copy
-Edit
+
 {
   "class": "printed",
   "confidence": 0.9321,
@@ -208,9 +173,7 @@ Edit
   "text": "extracted text here"
 }
 cURL example
-bash
-Copy
-Edit
+
 curl -X POST "http://<BASE_URL>/ocr-auto" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
@@ -218,21 +181,14 @@ curl -X POST "http://<BASE_URL>/ocr-auto" \
 Training & Export (done on Windows)
 Train:
 
-bash
-Copy
-Edit
+
 python -m src.train
 Export ONNX (for Pi):
 
-bash
-Copy
-Edit
+
 python -m src.export_onnx
 Commit:
 
-bash
-Copy
-Edit
 models/mobilenet_v2_best.onnx
 models/labels.json
 Environment Notes
@@ -282,5 +238,3 @@ Cloud deploy (Render/Railway) + ngrok for testing
 "low_confidence": false
 }
 
-Copy
-Edit

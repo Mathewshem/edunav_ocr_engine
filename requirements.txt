@@ -1,0 +1,29 @@
+# Core
+fastapi==0.112.0
+uvicorn[standard]==0.30.3
+python-multipart==0.0.9
+numpy>=1.24
+Pillow>=10.0
+tqdm>=4.66
+scikit-learn>=1.4
+
+# Computer vision
+# On WINDOWS use this:
+opencv-python>=4.8
+
+# On RASPBERRY PI:
+#   DON'T pip-install opencv-python (it often fails).
+#   Instead: sudo apt-get update && sudo apt-get install -y python3-opencv
+#   Then you can remove opencv-python from the venv if needed.
+
+# Training (Windows/Laptop)
+torch>=2.1
+torchvision>=0.16
+
+# Lightweight inference option on Pi (recommended)
+onnxruntime>=1.17
+
+#Raspberry Pi install tips
+#Use: sudo apt-get install -y python3-opencv
+#If torch wheels are painful on Pi 2GB, skip Torch and use ONNX Runtime for inference.
+#You can train on Windows, export ONNX, and deploy the .onnx file to the Pi.
